@@ -80,7 +80,7 @@ console.log(revenueByMonth);
                 <YAxis tick={{ fontSize: 11 }} tickLine={false} axisLine={false}
                   tickFormatter={v => `$${(v / 1000).toFixed(0)}k`} />
                 <Tooltip
-                  formatter={(v: number) => [`$${v.toFixed(2)}`, 'Revenue']}
+                  formatter={(v) => [`$${Number(v).toFixed(2)}`, 'Revenue']}
                   contentStyle={{ fontSize: 12, borderRadius: 8, border: '1px solid #e2e8f0' }}
                 />
                 <Bar dataKey="revenue" fill="#3B82F6" radius={[4, 4, 0, 0]} />

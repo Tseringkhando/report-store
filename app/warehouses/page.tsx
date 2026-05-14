@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 interface Warehouse {
-  warehouse_id: number; name: string;
+  warehouse_id: number; warehouse_name: string;
   address: string; region: string; created_at: string;
 }
 
