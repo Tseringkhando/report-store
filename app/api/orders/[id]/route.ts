@@ -3,9 +3,11 @@ import { query } from '@/lib/db';
 
 export async function GET(
   _req: NextRequest,
-  { params }: { params: { id: string } }
+   { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params;
   try {
+    
     const order = await query(`
       SELECT
         o.*,
@@ -14,7 +16,7 @@ export async function GET(
       FROM orders o
       JOIN customers c ON c.customer_id = o.customer_id
       WHERE o.order_id = $1
-    `, [params.id]);
+    `, [id]);
 
     const items = await query(`
       SELECT
@@ -24,7 +26,7 @@ export async function GET(
       FROM order_products oi
       JOIN products p ON p.product_id = oi.product_id
       WHERE oi.order_id = $1
-    `, [params.id]);
+    `, [id]);
 
     return NextResponse.json({
       order: order.rows[0],
@@ -38,8 +40,9 @@ export async function GET(
 
 export async function PATCH(
   req: NextRequest,
-  { params }: { params: { id: string } }
+   { params }: { params: Promise<{ id: string }> }
 ) {
+   const { id } = await params;
   try {
     const body = await req.json();
     const { status } = body;
@@ -61,7 +64,7 @@ export async function PATCH(
         ${col ? `, ${col} = NOW()` : ''}
       WHERE order_id = $2
       RETURNING *
-    `, [status, params.id]);
+    `, [status, id]);
 
     if (result.rows.length === 0) {
       return NextResponse.json({ error: 'Order not found' }, { status: 404 });
