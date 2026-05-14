@@ -49,40 +49,9 @@ export async function GET() {
       byWarehouse: byWarehouse.rows,
     });
   } catch (err) {
-    console.error(err.message);
     return NextResponse.json({ error: 'Failed to fetch inventory' }, { status: 500 });
   }
 }
 
 
 //post
-export async function POST(req: NextRequest) {
-  try {
-    const body = await req.json();
-    const { product_id, warehouse_id, quantity_on_hand, reorder_threshold } = body;
-
-    // Check if this product-warehouse pair already exists
-    const existing = await query(
-      `SELECT inventory_id FROM inventory WHERE product_id = $1 AND warehouse_id = $2`,
-      [product_id, warehouse_id]
-    );
-
-    if (existing.rows.length > 0) {
-      return NextResponse.json(
-        { error: 'This product is already stocked in that warehouse. Use an inventory adjustment instead.' },
-        { status: 400 }
-      );
-    }
-
-    const result = await query(`
-      INSERT INTO inventory (product_id, warehouse_id, quantity_on_hand, reorder_threshold)
-      VALUES ($1, $2, $3, $4)
-      RETURNING *
-    `, [product_id, warehouse_id, quantity_on_hand, reorder_threshold ?? 10]);
-
-    return NextResponse.json({ inventory: result.rows[0] }, { status: 201 });
-  } catch (err) {
-    const message = err instanceof Error ? err.message : String(err);
-    return NextResponse.json({ error: message }, { status: 500 });
-  }
-}
