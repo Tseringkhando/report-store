@@ -1,37 +1,69 @@
-Live dashboard: built with Next.js, connected to a hosted PostgreSQL instance on Neon, deployed on Vercel.
+## Live Dashboard — Next.js + Neon PostgreSQL + Vercel
 
-store_dashboard/ — Next.js frontend dashboard
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Database | PostgreSQL 15 on Neon |
+| Backend API | Next.js 14 API Routes |
+| Frontend | Next.js 14 + TypeScript + Tailwind |
+| Charts | Recharts |
+| Deployment | Vercel |
+
+---
+
+## Project Structure
+
+```
+ecommerce_db/
+├── 01_schema.sql       — DDL: tables, types, constraints, comments
+├── 02_seed.sql         — DML: 20 customers, 25 products, 4 warehouses, 30 orders
+├── 03_queries.sql      — 12 showcase queries
+├── 04_indexes.sql      — B-tree, partial, composite, expression, GIN indexes
+├── 05_triggers.sql     — Auto-logging trigger on inventory changes
+└── README.md
+
+store_dashboard/
 ├── app/
-│ ├── page.tsx — Dashboard: revenue stats + charts
-│ ├── products/page.tsx — Product catalogue with search + category filter
-│ ├── products/new/page.tsx — Add new product form
-│ ├── customers/page.tsx — Customer list with LTV + segmentation
-│ ├── customers/new/page.tsx — Add new customer form
-│ ├── orders/page.tsx — All orders with inline status update
-│ ├── orders/new/page.tsx — New order form with cart system
-│ ├── inventory/page.tsx — Inventory health with reorder alerts
-│ ├── inventory/new/page.tsx — Add product to warehouse inventory
-│ ├── warehouses/page.tsx — Warehouse list
-│ └── warehouses/new/page.tsx — Add new warehouse form
-│ └── api/ — Next.js API routes (connect to Neon)
-│ ├── dashboard/route.ts
-│ ├── products/route.ts
-│ ├── customers/route.ts
-│ ├── orders/route.ts
-│ ├── orders/[id]/route.ts
-│ ├── inventory/route.ts
-│ └── warehouses/route.ts
+│   ├── page.tsx                     — Dashboard: revenue stats + charts
+│   ├── products/page.tsx            — Product catalogue with search + filter
+│   ├── products/new/page.tsx        — Add product form
+│   ├── customers/page.tsx           — Customers with LTV + segmentation
+│   ├── customers/new/page.tsx       — Add customer form
+│   ├── orders/page.tsx              — Orders with inline status update
+│   ├── orders/new/page.tsx          — New order form with cart system
+│   ├── inventory/page.tsx           — Inventory health + reorder alerts
+│   ├── inventory/new/page.tsx       — Add product to warehouse
+│   ├── warehouses/page.tsx          — Warehouse list
+│   ├── warehouses/new/page.tsx      — Add warehouse form
+│   └── api/
+│       ├── dashboard/route.ts
+│       ├── products/route.ts
+│       ├── customers/route.ts
+│       ├── orders/route.ts
+│       ├── orders/[id]/route.ts
+│       ├── inventory/route.ts
+│       └── warehouses/route.ts
 ├── components/
-│ └── Sidebar.tsx — Navigation sidebar
+│   └── Sidebar.tsx
 ├── lib/
-│ └── db.ts — PostgreSQL connection pool (pg)
-└── .env.local — DATABASE_URL (not committed)
-Schema Overview
-categories ──< products ──< order_items >── orders >── customers
-│ │
-└──< inventory >── warehouses reviews
-│
-inventory_log
+│   └── db.ts                        — PostgreSQL connection pool
+└── .env.local                       — DATABASE_URL (not committed)
+```
 
-Tech stack
-LayerTechnologyDatabasePostgreSQL 15 on NeonBackend APINext.js 14 API RoutesFrontendNext.js 14 + TypeScript + TailwindChartsRechartsDeploymentVercel
+---
+
+## Schema
+
+```
+categories ──< products ──< order_items >── orders >── customers
+                   │                                        │
+                   └──< inventory >── warehouses        reviews
+                             │
+                         inventory_log
+```
+
+---
+
