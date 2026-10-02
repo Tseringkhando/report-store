@@ -17,13 +17,7 @@
 ## Project Structure
 
 ```
-ecommerce_db/
-├── 01_schema.sql       — DDL: tables, types, constraints, comments
-├── 02_seed.sql         — DML: 20 customers, 25 products, 4 warehouses, 30 orders
-├── 03_queries.sql      — 12 showcase queries
-├── 04_indexes.sql      — B-tree, partial, composite, expression, GIN indexes
-├── 05_triggers.sql     — Auto-logging trigger on inventory changes
-└── README.md
+
 
 store_dashboard/
 ├── app/
